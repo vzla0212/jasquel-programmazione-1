@@ -49,16 +49,6 @@ foo a b c e = if elem (fst(head c)) a
                             then foo (delete ((fst(head c))-99) a) b (tail c) ((head c):e)
                             else foo a b (tail c) ((head c):e)             
 
-{-
-foo a b c = foldl (\acc x -> (if  (elem (fst(x)) a)
-                             then ((fst(x)-1,snd(x)):acc) 
-                             else if (elem (fst(x)) b)
-                                  then  do{a<-(fst(x):a); (24,Negra):acc}
-                                  else if ((fst(x)>100) && (elem (fst(x)-99) a))
-                                       then do{(delete (fst(x)-99) a); x:acc}
-                                       else x:acc)) [] c
--}
-
 tiempo :: String -> Tiempo
 tiempo a = (digitToInt (head a ) , 4)
 
