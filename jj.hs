@@ -27,9 +27,6 @@ compasesp a b c d e = if c < (fst b)*2
                      then  compasesp (tail a) b (c+dtiempo(head a)) ((head a):d) e 
                      else  compasesp a        b 0                      []         ((reverse d):e)
 
---foo1 a b [] e = return $ reverse e
---foo1 a b c e = foo1 a b (tail c) (do {r <-(foo a b (head c) []); reverse(r):e})
-
 foo1 a b c = reverse $ foldl (\acc x -> (do {l<-(foo a b x []); l:acc})) [] c
 
 --a compases
