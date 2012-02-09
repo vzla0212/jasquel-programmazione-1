@@ -22,32 +22,33 @@ instance Show Armadura where
 
 compases a b = compasesp a b 0 [] []
 
+{-
+a lista de notas
+b tiempo
+c contador que lleva el tiempo de cada compas
+d lista donde se almacena el compas parcial
+e lista donde se almacenan los compases
+-}
+--FIRMA
 compasesp [] b c d e = return (reverse(reverse(d):e))
 compasesp a b c d e = if c < (fst b)*2
                      then  compasesp (tail a) b (c+dtiempo(head a)) ((head a):d) e 
                      else  compasesp a        b 0                      []         ((reverse d):e)
-
+{-
+a compases
+b los sostenido afectados por la armadura
+c lista de compases
+-}
+--FIRMA
 foo1 a b c = reverse $ foldl (\acc x -> (do {l<-(foo a b x []); l:acc})) [] c
-
---a compases
---b lo de la armadura
---c compas sobre el cual estamos operando
---d los sostenidos encontrados que no eran afectados por la armadura
---e compas salida
---f resultado
-
-
-foo a b [] e = return $ reverse e            
-foo a b c e = if elem (fst(head c)) a
-                 then  foo a b (tail c) ((fst(head c)-1,(snd (head c))):e)
-                 else  if elem (fst(head c)) b
-                       then foo ((fst(head c)):a) b (tail c) ((head c):e)
-                       else if ((fst(head c) > 100) && (elem (fst(head c)-99)  a))
-                            then foo (delete ((fst(head c))-99) a) b (tail c) ((head c):e)
-                            else foo a b (tail c) ((head c):e
 
 
 {-
+a compases
+b los sostenidos afectados por la armadura
+c compas sobre el cual estamos operando
+e compas salida
+
 Ante las modificaciones propuestas, en la cual se agregaba un constructor para manejar los becuadros, preferimos usar la
 solución que nosotros planteamos, la cual es explicada en el siguiente parrafo:
 
@@ -61,10 +62,29 @@ Para lograr una mayor comprensión de lo anterior planteado, se exhiben los sgui
 0) al restar 100 al entero midi que representa al becuadro se obtiene la nota sin ningún tipo de alteración.
 1) al restar 99 al entero midi que representa al becuadro se obtiene la nota, esta vez con la alteración de sostenido.
 -}
+--FIRMA
+foo a b [] e = return $ reverse e            
+foo a b c e = if elem (fst(head c)) a
+                 then  foo a b (tail c) ((fst(head c)-1,(snd (head c))):e)
+                 else  if elem (fst(head c)) b
+                       then foo ((fst(head c)):a) b (tail c) ((head c):e)
+                       else if ((fst(head c) > 100) && (elem (fst(head c)-99)  a))
+                            then foo (delete ((fst(head c))-99) a) b (tail c) ((head c):e)
+                            else foo a b (tail c) ((head c):e
 
+{-
+a string de la entrada que representa el tiempo
+
+Devuelve un Tiempo
+-}
 tiempo :: String -> Tiempo
 tiempo a = (digitToInt (head a ) , 4)
 
+{
+n Figura
+
+Devuelve el tiempo de una Figura
+}
 dtiempo :: Nota -> Int
 dtiempo n= 
         case snd n of
@@ -73,12 +93,23 @@ dtiempo n=
                 Negra -> 2
                 Corchea -> 1
 
+{
+a Lista de Strings de notas
+
+Devuelve una lista de Notas
+}
 notas :: [String]->[Nota]
 notas f = map nota f
 
+{
+x String de una nota
+
+Devuelve una Nota
+}
 nota :: String -> Nota
 nota x = (midi x, case digitToInt $ last x of{1->Redonda;2->Blanca;4->Negra;8->Corchea}) 
 
+{}
 midi :: String -> Int
 midi x = midis x 0
 
