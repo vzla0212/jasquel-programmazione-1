@@ -80,11 +80,11 @@ Devuelve un Tiempo
 tiempo :: String -> Tiempo
 tiempo a = (digitToInt (head a ) , 4)
 
-{
+{-
 n Figura
 
 Devuelve el tiempo de una Figura
-}
+-}
 dtiempo :: Nota -> Int
 dtiempo n= 
         case snd n of
@@ -93,27 +93,35 @@ dtiempo n=
                 Negra -> 2
                 Corchea -> 1
 
-{
+{-
 a Lista de Strings de notas
 
 Devuelve una lista de Notas
-}
+-}
 notas :: [String]->[Nota]
 notas f = map nota f
 
-{
+{-
 x String de una nota
 
 Devuelve una Nota
-}
+-}
 nota :: String -> Nota
 nota x = (midi x, case digitToInt $ last x of{1->Redonda;2->Blanca;4->Negra;8->Corchea}) 
 
-{}
+{-
+x String de una nota
+
+Devuelve un entero que se usa para identificar la nota
+-}
 midi :: String -> Int
 midi x = midis x 0
 
+{-
+x String de una nota
 
+Devuelve un entero que se usa para identificar la nota
+-}
 midis :: Num a => [Char] -> a -> a
 midis [] i =  i
 midis x i =
@@ -130,6 +138,11 @@ midis x i =
                 '\''-> midis (tail x) (12+i)
                 otherwise -> midis (tail x) i
 
+{-
+l String de una armadura
+
+Devuelve una Armadura
+-}
 armadura :: String -> Armadura
 armadura l = 
         case l of
@@ -138,6 +151,12 @@ armadura l =
                  "D"-> D
                  "G"-> G
 
+{-
+l ruta a un archivo
+
+Devuelve una tupla con una tupla en la segunda posición
+(a,(b,c)) a String Armadura, b String Tiempo, c lista de String de notas
+-}
 partirEntrada :: FilePath -> IO (String, (String, [String]))
 partirEntrada b = do{ x <- readFile b;
                       return (head(words x), (head(tail(words x)), tail(tail(words x))))}
